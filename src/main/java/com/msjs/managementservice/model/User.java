@@ -9,10 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.msjs.managementservice.model.Constants.*;
+import static com.msjs.managementservice.model.Constants.SIZE_2;
+import static com.msjs.managementservice.model.Constants.SIZE_25;
 
 /**
  * Created by jakub on 29.03.2017.
@@ -24,7 +22,7 @@ import static com.msjs.managementservice.model.Constants.*;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -47,9 +45,6 @@ public class User {
     @Email
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

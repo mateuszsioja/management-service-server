@@ -1,10 +1,10 @@
 package com.msjs.managementservice.web.dto.mapper;
 
-import com.msjs.managementservice.web.dto.UserDto;
 import com.msjs.managementservice.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.msjs.managementservice.web.dto.UserDto;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -14,13 +14,6 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
-    private final RoleMapper roleMapper;
-
-    @Autowired
-    public UserMapper(RoleMapper roleMapper) {
-        this.roleMapper = roleMapper;
-    }
-
     public UserDto mapToDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
@@ -28,7 +21,7 @@ public class UserMapper {
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setEmail(user.getEmail());
-        dto.setRoles(user.getRoles().stream().map(roleMapper::mapToDto).collect(Collectors.toList()));
+        dto.setRole(user.getRole());
         return dto;
     }
 
@@ -39,6 +32,15 @@ public class UserMapper {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
+        user.setRole(userDto.getRole());
         return user;
+    }
+
+    public List<UserDto> mapToDtoList(List<User> users) {
+        return users.stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
+    public List<User> mapToEntityList(List<UserDto> userDtos) {
+        return userDtos.stream().map(this::mapToEntity).collect(Collectors.toList());
     }
 }

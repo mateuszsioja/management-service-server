@@ -9,9 +9,14 @@ import java.net.URI;
  */
 public final class ApiUrl {
     static final String API = "/api";
+
     static final String USERS = API + "/users";
+    static final String ROLE = "/role";
+
     static final String AUTHENTICATION = API + "/auth";
     static final String ID_PATH_PARAM = "/{id}";
+
+    static final String LOCATION_HEADER = "Location";
 
     public static URI getLocationURI(Long id) {
         return ServletUriComponentsBuilder

@@ -5,4 +5,5 @@ package com.msjs.managementservice.web.dto;
  */
 public class ViewJson {
     public interface InputUser {}
+    public interface UpdateUser {}
 }

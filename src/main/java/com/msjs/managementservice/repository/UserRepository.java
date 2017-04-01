@@ -1,8 +1,13 @@
 package com.msjs.managementservice.repository;
 
+import com.msjs.managementservice.model.Role;
 import com.msjs.managementservice.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.List;
 
+public interface UserRepository extends JpaRepository<User, Long> {
+    List<User> findAll();
+
+    List<User> findAllByRole(Role role);
 }
