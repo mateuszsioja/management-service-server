@@ -1,10 +1,21 @@
 package com.msjs.managementservice.web.controller;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+
 /**
  * Created by jakub on 29.03.2017.
  */
-public class ApiUrl {
-    static final String API = "/api/v1";
+public final class ApiUrl {
+    static final String API = "/api";
     static final String USERS = API + "/users";
     static final String AUTHENTICATION = API + "/auth";
+    static final String ID_PATH_PARAM = "/{id}";
+
+    public static URI getLocationURI(Long id) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest().path(ID_PATH_PARAM)
+                .buildAndExpand(id).toUri();
+    }
 }
