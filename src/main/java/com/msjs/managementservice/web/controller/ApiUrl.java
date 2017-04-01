@@ -1,4 +1,4 @@
-package com.msjs.managementservice.controller;
+package com.msjs.managementservice.web.controller;
 
 /**
  * Created by jakub on 29.03.2017.
@@ -6,4 +6,5 @@ package com.msjs.managementservice.controller;
 public class ApiUrl {
     static final String API = "/api/v1";
     static final String USERS = API + "/users";
+    static final String AUTHENTICATION = API + "/auth";
 }
