@@ -24,16 +24,16 @@ import static com.msjs.managementservice.model.Constants.*;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
     @Size(min = SIZE_2, max = SIZE_25)
+    @Column(unique = true)
     private String username;
 
     @NotNull
     @Size(min = SIZE_2)
-    @Column(unique = true)
     private String password;
 
     @NotNull
