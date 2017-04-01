@@ -9,6 +9,7 @@ import com.msjs.managementservice.web.dto.ViewJson;
 import com.msjs.managementservice.web.dto.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ public class UserController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> createUser(@Valid @RequestBody @JsonView(ViewJson.InputUser.class) final UserDto userDto) {
         User user = userService.saveUser(userMapper.mapToEntity(userDto));
         return ResponseEntity.created(getLocationURI(user.getId())).build();
