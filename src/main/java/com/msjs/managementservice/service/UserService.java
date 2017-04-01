@@ -1,5 +1,6 @@
 package com.msjs.managementservice.service;
 
+import com.msjs.managementservice.model.User;
 import com.msjs.managementservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,11 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public User saveUser(User user) {
+        user.setPassword(PasswordEncoderGenerator
+                .generate(user.getPassword()));
+        return userRepository.save(user);
     }
 }

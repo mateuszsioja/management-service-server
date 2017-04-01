@@ -6,4 +6,5 @@ package com.msjs.managementservice.web.controller;
 public class ApiUrl {
     static final String API = "/api/v1";
     static final String USERS = API + "/users";
+    static final String AUTHENTICATION = API + "/auth";
 }
