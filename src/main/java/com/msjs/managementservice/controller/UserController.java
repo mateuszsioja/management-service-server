@@ -1,7 +1,7 @@
 package com.msjs.managementservice.controller;
 
 
-import com.msjs.managementservice.dto.InputUserDto;
+import com.msjs.managementservice.dto.UserDto;
 import com.msjs.managementservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping(value = USERS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createUser(@Valid @RequestBody final InputUserDto inputUserDto) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody final UserDto userDto) {
         return null;
     }
 

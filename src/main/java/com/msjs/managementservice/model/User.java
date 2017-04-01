@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.msjs.managementservice.model.Constans.*;
+import static com.msjs.managementservice.model.Constants.*;
 
 /**
  * Created by jakub on 29.03.2017.
