@@ -1,6 +1,6 @@
-package com.msjs.managementservice.dto.mapper;
+package com.msjs.managementservice.web.dto.mapper;
 
-import com.msjs.managementservice.dto.RoleDto;
+import com.msjs.managementservice.web.dto.RoleDto;
 import com.msjs.managementservice.model.Role;
 import org.springframework.stereotype.Component;
 

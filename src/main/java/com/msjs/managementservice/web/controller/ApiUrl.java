@@ -1,4 +1,4 @@
-package com.msjs.managementservice.controller;
+package com.msjs.managementservice.web.controller;
 
 /**
  * Created by jakub on 29.03.2017.

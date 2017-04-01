@@ -1,7 +1,7 @@
-package com.msjs.managementservice.controller;
+package com.msjs.managementservice.web.controller;
 
 
-import com.msjs.managementservice.dto.UserDto;
+import com.msjs.managementservice.web.dto.UserDto;
 import com.msjs.managementservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.msjs.managementservice.controller.ApiUrl.USERS;
+import static com.msjs.managementservice.web.controller.ApiUrl.USERS;
 
 /**
  * Created by jakub on 29.03.2017.
@@ -31,5 +31,6 @@ public class UserController {
     public ResponseEntity<Void> createUser(@Valid @RequestBody final UserDto userDto) {
         return null;
     }
+
 
 }

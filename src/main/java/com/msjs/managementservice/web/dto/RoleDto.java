@@ -1,4 +1,4 @@
-package com.msjs.managementservice.dto;
+package com.msjs.managementservice.web.dto;
 
 import com.msjs.managementservice.model.RoleType;
 import lombok.Getter;
