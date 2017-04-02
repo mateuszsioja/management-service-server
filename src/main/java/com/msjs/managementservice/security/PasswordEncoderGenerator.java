@@ -1,4 +1,4 @@
-package com.msjs.managementservice.service;
+package com.msjs.managementservice.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

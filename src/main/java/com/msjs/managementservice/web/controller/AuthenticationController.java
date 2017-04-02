@@ -1,12 +1,14 @@
 package com.msjs.managementservice.web.controller;
 
 import com.msjs.managementservice.security.AuthenticationService;
-import com.msjs.managementservice.security.TokenUtils;
 import com.msjs.managementservice.web.dto.AuthenticationRequest;
 import com.msjs.managementservice.web.dto.AuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -21,12 +23,10 @@ import static com.msjs.managementservice.web.controller.ApiUrl.REFRESH;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-    private final TokenUtils tokenUtils;
 
     @Autowired
-    public AuthenticationController(AuthenticationService authenticationService, TokenUtils tokenUtils) {
+    public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
-        this.tokenUtils = tokenUtils;
     }
 
     @PostMapping
@@ -36,6 +36,6 @@ public class AuthenticationController {
 
     @PostMapping(REFRESH)
     public ResponseEntity<AuthenticationToken> refresh(@Valid @RequestBody AuthenticationToken authenticationToken) {
-        return ResponseEntity.ok(new AuthenticationToken(tokenUtils.refreshToken(authenticationToken.getToken())));
+        return ResponseEntity.ok(authenticationService.refreshAuthentication(authenticationToken.getToken()));
     }
 }

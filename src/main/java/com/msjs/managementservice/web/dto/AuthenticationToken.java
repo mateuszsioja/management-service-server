@@ -11,9 +11,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class AuthenticationToken implements Serializable{
-
     private String token;
-
+    public AuthenticationToken() {}
     public AuthenticationToken(String token) {
         this.token = token;
     }

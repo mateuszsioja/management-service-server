@@ -1,6 +1,5 @@
 package com.msjs.managementservice.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.msjs.managementservice.security.TokenUtils.*;
 import static com.msjs.managementservice.web.controller.ApiUrl.*;
 
 /**
@@ -29,21 +29,14 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         ENDPOINTS_EXCLUDED_FROM_AUTHORIZATION.add(TOKEN_REFRESH_ENDPOINT);
     }
 
-    private final TokenUtils tokenUtils;
-
-    @Autowired
-    public AuthenticationFilter(TokenUtils tokenUtils) {
-        this.tokenUtils = tokenUtils;
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = httpServletRequest.getRequestURI();
         if (ENDPOINTS_EXCLUDED_FROM_AUTHORIZATION.stream().noneMatch(e -> e.equals(requestURI))) {
             String authToken = httpServletRequest.getHeader(TOKEN_HEADER);
-            tokenUtils.validateToken(authToken);
-            String username = tokenUtils.getUsernameFromToken(authToken);
-            List<GrantedAuthority> authorities = tokenUtils.getAuthoritiesFromToken(authToken);
+            validateToken(authToken);
+            String username = getUsernameFromToken(authToken);
+            List<GrantedAuthority> authorities = getAuthoritiesFromToken(authToken);
             UsernamePasswordAuthenticationToken authenticationContext = new UsernamePasswordAuthenticationToken(username, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authenticationContext);
         }
