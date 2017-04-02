@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by jakub on 01.04.2017.
@@ -25,17 +25,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         com.msjs.managementservice.model.User user = userRepository.findUserByUsername(username);
-        List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
+        List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
         return buildUserForAuthentication(user, authorities);
     }
 
     private User buildUserForAuthentication(com.msjs.managementservice.model.User user, List<GrantedAuthority> authorities) {
-        return new User(user.getUsername(), user.getPassword(), true, true, true, true, authorities);
+        return new User(user.getUsername(), user.getPassword(), true, true, user.isCredentialsNotExpired(), true, authorities);
     }
 
-    private List<GrantedAuthority> buildUserAuthority(List<Role> roles) {
-        return roles.stream()
-                .map(r -> new SimpleGrantedAuthority(r.getRoleType().toString()))
-                .collect(Collectors.toList());
+    private List<GrantedAuthority> buildUserAuthority(Role role) {
+        return Collections.singletonList(new SimpleGrantedAuthority(role.toString()));
     }
 }

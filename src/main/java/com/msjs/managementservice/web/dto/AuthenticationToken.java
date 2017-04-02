@@ -1,6 +1,7 @@
 package com.msjs.managementservice.web.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -8,11 +9,12 @@ import java.io.Serializable;
  * Created by jakub on 01.04.2017.
  */
 @Getter
-public class AuthenticationResponse implements Serializable{
+@Setter
+public class AuthenticationToken implements Serializable{
 
-    private final String token;
+    private String token;
 
-    public AuthenticationResponse(String token) {
+    public AuthenticationToken(String token) {
         this.token = token;
     }
 }

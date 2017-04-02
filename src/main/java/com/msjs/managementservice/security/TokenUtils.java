@@ -3,45 +3,60 @@ package com.msjs.managementservice.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
-import javax.xml.bind.ValidationException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Created by jakub on 01.04.2017.
  */
+@Component
 public class TokenUtils {
 
     private static final String ROLES = "roles";
     private static final String CREATED_DATE = "created";
+    private static final String EXPIRATION_DATE = "expiration";
     private static final String SECRET = "secret";
-    private static final Long EXPIRATION = 300000L;
+    private static final int HALF_HOUR = 30;
+    private static final String USERNAME = "username";
 
-    public static String generateToken(UserDetails userDetails) {
-        Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
+    private final UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    public TokenUtils(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(USERNAME, userDetails.getUsername());
         claims.put(ROLES, userDetails.getAuthorities());
+        claims.put(CREATED_DATE, new Date());
+        claims.put(EXPIRATION_DATE, generateExpirationDate());
 
+        return generateToken(claims);
+    }
+
+    private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date())
-                .setExpiration(generateExpirationDate())
+                //.setExpiration(generateExpirationDate())
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }
 
-    public static String getUsernameFromToken(String token) {
+    public String getUsernameFromToken(String token) {
         return getClaimsFromToken(token).getSubject();
     }
 
-    public static List<GrantedAuthority> getAuthoritiesFromToken(String token) {
+    public List<GrantedAuthority> getAuthoritiesFromToken(String token) {
         Object authorities = getClaimsFromToken(token).get(ROLES);
         Object map = ((ArrayList) authorities).get(0);
         return ((LinkedHashMap<String, String>) map).entrySet().stream()
@@ -49,32 +64,37 @@ public class TokenUtils {
                 .collect(Collectors.toList());
     }
 
-    public static void validateToken(String token) {
-        Date expirationDate = getExpirationDateFromToken(token);
-        checkIfTokenPassedTimeLimit(expirationDate);
-    }
-
-    private static Date getExpirationDateFromToken(String token) {
-        return getClaimsFromToken(token).getExpiration();
-    }
-
-    private static void checkIfTokenPassedTimeLimit(Date expirationDate) {
-        if(expirationDate.after(new Date())) {
-            throw new RuntimeException("token expired");
+    public String refreshToken(String token) {
+        Claims claimsFromToken = getClaimsFromToken(token);
+        String username = (String) claimsFromToken.get(USERNAME);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if (userDetails.isCredentialsNonExpired()) {
+            claimsFromToken.put(EXPIRATION_DATE, generateExpirationDate());
+            return generateToken(claimsFromToken);
+        } else {
+            throw new RuntimeException("cred expired");
         }
     }
 
-    private static Claims getClaimsFromToken(String token) {
-        //fix this to return 2 date objects
+    private Claims getClaimsFromToken(String token) {
         Claims claims;
         claims = Jwts.parser()
                 .setSigningKey(SECRET)
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
         return claims;
     }
 
+    public void validateToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        Long milliSeconds = (Long) claims.get(EXPIRATION_DATE);
+        Date expiryDate = new Date(milliSeconds);
+        if (new Date().after(expiryDate)) {
+            throw new RuntimeException("token expired");
+        }
+    }
+
     private static Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + EXPIRATION * 1000);
+        return DateUtils.addMinutes(new Date(), 1);
     }
 }

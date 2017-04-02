@@ -3,6 +3,7 @@ package com.msjs.managementservice.config;
 
 import com.msjs.managementservice.security.TokenAuthenticationEntryPoint;
 import com.msjs.managementservice.security.AuthenticationFilter;
+import com.msjs.managementservice.security.TokenUtils;
 import com.msjs.managementservice.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,12 +26,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsServiceImpl userDetailsService;
-    private TokenAuthenticationEntryPoint authenticationEntryPoint;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final TokenAuthenticationEntryPoint authenticationEntryPoint;
+    private final TokenUtils tokenUtils;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, TokenAuthenticationEntryPoint tokenAuthenticationEntryPoint) {
+    @Autowired
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, TokenAuthenticationEntryPoint tokenAuthenticationEntryPoint, TokenUtils tokenUtils) {
         this.userDetailsService = userDetailsService;
         this.authenticationEntryPoint = tokenAuthenticationEntryPoint;
+        this.tokenUtils = tokenUtils;
     }
 
     @Autowired
@@ -47,14 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .and().authorizeRequests()
                 .antMatchers("/api/auth").permitAll()
+                .antMatchers("/api/auth/refresh").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.headers().cacheControl();
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.POST, "/api/auth");
     }
 
     @Bean
@@ -64,6 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationFilter authenticationFilter() {
-        return new AuthenticationFilter();
+        return new AuthenticationFilter(tokenUtils);
     }
 }
