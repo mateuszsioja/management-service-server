@@ -1,7 +1,7 @@
 package com.msjs.managementservice.security;
 
-import com.msjs.managementservice.exception.ErrorMessage;
-import com.msjs.managementservice.exception.ExpiredCredentialsException;
+import com.msjs.managementservice.exception.ExceptionMessage;
+import com.msjs.managementservice.exception.ManagementServiceSecurityException;
 import com.msjs.managementservice.web.dto.AuthenticationRequest;
 import com.msjs.managementservice.web.dto.AuthenticationToken;
 import io.jsonwebtoken.Claims;
@@ -21,7 +21,6 @@ import static com.msjs.managementservice.security.TokenUtils.*;
 @Service
 public class AuthenticationService {
 
-    private static final String EXPIRED_CREDENTIALS = "Token cannot be refreshed, because credentials has been changed.";
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationManager authenticationManager;
 
@@ -53,7 +52,7 @@ public class AuthenticationService {
             claimsFromToken = addNewExpirationDateToClaims(claimsFromToken);
             return new AuthenticationToken(generateToken(claimsFromToken));
         } else {
-            throw new ExpiredCredentialsException(ErrorMessage.CREDENTIALS_EXPIRED);
+            throw new ManagementServiceSecurityException(ExceptionMessage.CREDENTIALS_EXPIRED);
         }
     }
 }

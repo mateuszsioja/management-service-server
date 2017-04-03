@@ -1,5 +1,6 @@
 package com.msjs.managementservice.security;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,9 +32,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String requestURI = httpServletRequest.getRequestURI();
-        if (ENDPOINTS_EXCLUDED_FROM_AUTHORIZATION.stream().noneMatch(e -> e.equals(requestURI))) {
-            String authToken = httpServletRequest.getHeader(TOKEN_HEADER);
+        String authToken = httpServletRequest.getHeader(TOKEN_HEADER);
+        if (endpointRequiresAuthenticationAndTokenIsPresent(httpServletRequest, authToken)) {
             validateToken(authToken);
             String username = getUsernameFromToken(authToken);
             List<GrantedAuthority> authorities = getAuthoritiesFromToken(authToken);
@@ -41,5 +41,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticationContext);
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
+    }
+
+    private boolean endpointRequiresAuthenticationAndTokenIsPresent(HttpServletRequest request, String authToken) {
+        String requestURI = request.getRequestURI();
+        return ENDPOINTS_EXCLUDED_FROM_AUTHORIZATION.stream().noneMatch(e -> e.equals(requestURI)) && StringUtils.isNotBlank(authToken);
     }
 }

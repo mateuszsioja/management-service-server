@@ -1,9 +1,10 @@
 package com.msjs.managementservice.security;
 
-import com.msjs.managementservice.exception.ErrorMessage;
-import com.msjs.managementservice.exception.ExpiredTokenException;
+import com.msjs.managementservice.exception.ExceptionMessage;
+import com.msjs.managementservice.exception.ManagementServiceSecurityException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.security.core.GrantedAuthority;
@@ -56,11 +57,16 @@ public abstract class TokenUtils {
     }
 
     static void validateToken(String token) {
-        Claims claims = getClaimsFromToken(token);
+        Claims claims;
+        try {
+            claims = getClaimsFromToken(token);
+        } catch (MalformedJwtException e) {
+            throw new ManagementServiceSecurityException(ExceptionMessage.BAD_TOKEN);
+        }
         Long milliSeconds = (Long) claims.get(EXPIRATION_DATE);
         Date expiryDate = new Date(milliSeconds);
         if (new Date().after(expiryDate)) {
-            throw new ExpiredTokenException(ErrorMessage.TOKEN_EXPIRED);
+            throw new ManagementServiceSecurityException(ExceptionMessage.TOKEN_EXPIRED);
         }
     }
 
@@ -79,6 +85,6 @@ public abstract class TokenUtils {
     }
 
     private static Date generateExpirationDate() {
-        return DateUtils.addMinutes(new Date(), 1);
+        return DateUtils.addMinutes(new Date(), HALF_HOUR);
     }
 }

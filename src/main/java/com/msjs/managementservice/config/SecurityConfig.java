@@ -2,6 +2,7 @@ package com.msjs.managementservice.config;
 
 
 import com.msjs.managementservice.security.AuthenticationFilter;
+import com.msjs.managementservice.security.ExceptionHandlerFilter;
 import com.msjs.managementservice.security.TokenAuthenticationEntryPoint;
 import com.msjs.managementservice.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
-    private final TokenAuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, TokenAuthenticationEntryPoint tokenAuthenticationEntryPoint) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.authenticationEntryPoint = tokenAuthenticationEntryPoint;
     }
 
     @Autowired
@@ -43,12 +42,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint())
                 .and().authorizeRequests()
                 .antMatchers("/api/auth").permitAll()
                 .antMatchers("/api/auth/refresh").permitAll()
                 .anyRequest().authenticated()
-                .and().addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .and()
+                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandlerFilter(), AuthenticationFilter.class);
     }
 
     @Bean
@@ -59,5 +61,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationFilter authenticationFilter() {
         return new AuthenticationFilter();
+    }
+
+    @Bean
+    public TokenAuthenticationEntryPoint authenticationEntryPoint() {
+        return new TokenAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public ExceptionHandlerFilter exceptionHandlerFilter() {
+        return new ExceptionHandlerFilter();
     }
 }
