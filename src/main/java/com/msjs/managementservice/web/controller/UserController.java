@@ -3,10 +3,13 @@ package com.msjs.managementservice.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.msjs.managementservice.model.User;
+import com.msjs.managementservice.service.TaskService;
 import com.msjs.managementservice.service.UserService;
-import com.msjs.managementservice.web.dto.PathDto;
+import com.msjs.managementservice.web.dto.PatchRoleDto;
+import com.msjs.managementservice.web.dto.TaskDto;
 import com.msjs.managementservice.web.dto.UserDto;
 import com.msjs.managementservice.web.dto.ViewJson;
+import com.msjs.managementservice.web.dto.mapper.TaskMapper;
 import com.msjs.managementservice.web.dto.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,11 +32,15 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final TaskService taskService;
+    private final TaskMapper taskMapper;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper) {
+    public UserController(UserService userService, UserMapper userMapper, TaskService taskService, TaskMapper taskMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.taskService = taskService;
+        this.taskMapper = taskMapper;
     }
 
     @GetMapping
@@ -66,10 +73,16 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(ID_PATH_PARAM)
     public ResponseEntity changeUserRole(@PathVariable("id") Long id,
-                                         @Valid @RequestBody PathDto pathDto,
+                                         @Valid @RequestBody PatchRoleDto patchRoleDto,
                                          HttpServletResponse response) {
-        User user = userService.changeUserRole(pathDto.getTargetField(), id);
+        User user = userService.changeUserRole(patchRoleDto.getRole(), id);
         response.setHeader(LOCATION_HEADER, user.getId().toString());
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping(USER_TASKS)
+    public ResponseEntity<List<TaskDto>> getUserTasks(@PathVariable("id") Long userId) {
+        return new ResponseEntity<>(taskMapper.mapToDtoList(taskService.getUserTasks(userId)),
+                HttpStatus.OK);
     }
 }

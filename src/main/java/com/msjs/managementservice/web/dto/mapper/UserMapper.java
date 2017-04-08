@@ -2,6 +2,7 @@ package com.msjs.managementservice.web.dto.mapper;
 
 import com.msjs.managementservice.model.User;
 import com.msjs.managementservice.web.dto.UserDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,6 +15,9 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
+    @Autowired
+    private TaskMapper taskMapper;
+
     public UserDto mapToDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
@@ -22,6 +26,7 @@ public class UserMapper {
         dto.setLastName(user.getLastName());
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRole());
+        dto.setTaskDtos(taskMapper.mapToDtoList(user.getTasks()));
         return dto;
     }
 
@@ -33,6 +38,7 @@ public class UserMapper {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setRole(userDto.getRole());
+        user.setTasks(taskMapper.mapToEntityList(userDto.getTaskDtos()));
         return user;
     }
 

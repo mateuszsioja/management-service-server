@@ -9,6 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.msjs.managementservice.model.Constants.SIZE_2;
 import static com.msjs.managementservice.model.Constants.SIZE_25;
 
@@ -47,6 +50,9 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks = new ArrayList<>();
 
     private boolean credentialsNotExpired;
 }

@@ -1,6 +1,7 @@
 package com.msjs.managementservice.service;
 
 import com.msjs.managementservice.model.Role;
+import com.msjs.managementservice.model.Task;
 import com.msjs.managementservice.model.User;
 import com.msjs.managementservice.repository.UserRepository;
 import com.msjs.managementservice.security.PasswordEncoderGenerator;

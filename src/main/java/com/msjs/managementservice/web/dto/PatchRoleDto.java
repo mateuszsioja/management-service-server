@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PathDto {
+public class PatchRoleDto {
     @RoleType
-    String targetField;
+    String role;
 }
