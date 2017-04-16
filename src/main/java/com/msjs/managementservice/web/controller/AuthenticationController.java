@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.validation.Valid;
 
@@ -18,6 +19,7 @@ import static com.msjs.managementservice.web.controller.ApiUrl.REFRESH;
 /**
  * Created by jakub on 01.04.2017.
  */
+@CrossOrigin
 @RestController
 @RequestMapping(AUTHENTICATION)
 public class AuthenticationController {

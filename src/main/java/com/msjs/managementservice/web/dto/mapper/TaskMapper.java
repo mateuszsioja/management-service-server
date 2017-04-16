@@ -1,7 +1,7 @@
 package com.msjs.managementservice.web.dto.mapper;
 
-import com.msjs.managementservice.model.Task;
-import com.msjs.managementservice.repository.UserRepository;
+import com.msjs.managementservice.core.model.Task;
+import com.msjs.managementservice.core.repository.UserRepository;
 import com.msjs.managementservice.web.dto.TaskDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

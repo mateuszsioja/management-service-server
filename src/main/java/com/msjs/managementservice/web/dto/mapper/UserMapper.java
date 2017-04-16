@@ -1,6 +1,6 @@
 package com.msjs.managementservice.web.dto.mapper;
 
-import com.msjs.managementservice.model.User;
+import com.msjs.managementservice.core.model.User;
 import com.msjs.managementservice.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

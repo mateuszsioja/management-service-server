@@ -1,7 +1,7 @@
-package com.msjs.managementservice.repository;
+package com.msjs.managementservice.core.repository;
 
-import com.msjs.managementservice.model.Role;
-import com.msjs.managementservice.model.User;
+import com.msjs.managementservice.core.model.Role;
+import com.msjs.managementservice.core.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

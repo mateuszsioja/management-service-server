@@ -1,8 +1,8 @@
-package com.msjs.managementservice.service;
+package com.msjs.managementservice.core.service;
 
-import com.msjs.managementservice.model.Task;
-import com.msjs.managementservice.repository.TaskRepository;
-import com.msjs.managementservice.repository.UserRepository;
+import com.msjs.managementservice.core.model.Task;
+import com.msjs.managementservice.core.repository.TaskRepository;
+import com.msjs.managementservice.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

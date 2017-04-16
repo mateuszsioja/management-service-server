@@ -2,15 +2,16 @@ package com.msjs.managementservice.web.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.msjs.managementservice.model.User;
-import com.msjs.managementservice.service.TaskService;
-import com.msjs.managementservice.service.UserService;
-import com.msjs.managementservice.web.dto.PatchRoleDto;
-import com.msjs.managementservice.web.dto.TaskDto;
-import com.msjs.managementservice.web.dto.UserDto;
-import com.msjs.managementservice.web.dto.ViewJson;
+import com.msjs.managementservice.core.model.User;
+import com.msjs.managementservice.core.model.UsersUniqueFieldsView;
+import com.msjs.managementservice.core.repository.UserRepository;
+import com.msjs.managementservice.core.repository.UsersUniqueFieldsRepository;
+import com.msjs.managementservice.core.service.TaskService;
+import com.msjs.managementservice.core.service.UserService;
+import com.msjs.managementservice.web.dto.*;
 import com.msjs.managementservice.web.dto.mapper.TaskMapper;
 import com.msjs.managementservice.web.dto.mapper.UserMapper;
+import com.msjs.managementservice.web.dto.mapper.UsersUniqueFieldsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import static com.msjs.managementservice.web.controller.ApiUrl.*;
 /**
  * Created by jakub on 29.03.2017.
  */
+@CrossOrigin
 @RestController
 @RequestMapping(USERS)
 public class UserController {
@@ -34,13 +36,18 @@ public class UserController {
     private final UserMapper userMapper;
     private final TaskService taskService;
     private final TaskMapper taskMapper;
+    private final UsersUniqueFieldsMapper usersUniqueFieldsMapper;
+    private final UsersUniqueFieldsRepository usersUniqueFieldsRepository;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper, TaskService taskService, TaskMapper taskMapper) {
+    public UserController(UserService userService, UserMapper userMapper, TaskService taskService, TaskMapper taskMapper, UserRepository userRepository, UsersUniqueFieldsMapper usersUniqueFieldsMapper, UsersUniqueFieldsRepository usersUniqueFieldsRepository) {
         this.userService = userService;
         this.userMapper = userMapper;
         this.taskService = taskService;
         this.taskMapper = taskMapper;
+        this.usersUniqueFieldsMapper = usersUniqueFieldsMapper;
+
+        this.usersUniqueFieldsRepository = usersUniqueFieldsRepository;
     }
 
     @GetMapping
@@ -64,8 +71,7 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody @JsonView(ViewJson.InputUser.class) final UserDto userDto) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody @JsonView(ViewJson.InputUser.class) UserDto userDto) {
         User user = userService.saveUser(userMapper.mapToEntity(userDto));
         return ResponseEntity.created(getLocationURI(user.getId())).build();
     }
@@ -84,5 +90,11 @@ public class UserController {
     public ResponseEntity<List<TaskDto>> getUserTasks(@PathVariable("id") Long userId) {
         return new ResponseEntity<>(taskMapper.mapToDtoList(taskService.getUserTasks(userId)),
                 HttpStatus.OK);
+    }
+
+    @GetMapping(UNIQUE_FIELDS)
+    public ResponseEntity<UsersUniqueFieldsDto> findUsersUniqueFields() {
+        List<UsersUniqueFieldsView> views = usersUniqueFieldsRepository.findAll();
+        return new ResponseEntity<>(usersUniqueFieldsMapper.toDto(views), HttpStatus.OK);
     }
 }

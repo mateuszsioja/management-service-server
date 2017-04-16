@@ -1,6 +1,6 @@
-package com.msjs.managementservice.repository;
+package com.msjs.managementservice.core.repository;
 
-import com.msjs.managementservice.model.Task;
+import com.msjs.managementservice.core.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

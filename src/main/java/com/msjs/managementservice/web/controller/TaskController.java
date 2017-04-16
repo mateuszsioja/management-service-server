@@ -1,7 +1,7 @@
 package com.msjs.managementservice.web.controller;
 
-import com.msjs.managementservice.model.Task;
-import com.msjs.managementservice.service.TaskService;
+import com.msjs.managementservice.core.model.Task;
+import com.msjs.managementservice.core.service.TaskService;
 import com.msjs.managementservice.web.dto.PatchDto;
 import com.msjs.managementservice.web.dto.TaskDto;
 import com.msjs.managementservice.web.dto.mapper.TaskMapper;
@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.msjs.managementservice.web.controller.ApiUrl.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping(TASKS)
 public class TaskController {

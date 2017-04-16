@@ -1,7 +1,7 @@
 package com.msjs.managementservice.security;
 
-import com.msjs.managementservice.model.Role;
-import com.msjs.managementservice.repository.UserRepository;
+import com.msjs.managementservice.core.model.Role;
+import com.msjs.managementservice.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,12 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        com.msjs.managementservice.model.User user = userRepository.findUserByUsername(username);
+        com.msjs.managementservice.core.model.User user = userRepository.findUserByUsername(username);
         List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
         return buildUserForAuthentication(user, authorities);
     }
 
-    private User buildUserForAuthentication(com.msjs.managementservice.model.User user, List<GrantedAuthority> authorities) {
+    private User buildUserForAuthentication(com.msjs.managementservice.core.model.User user, List<GrantedAuthority> authorities) {
         return new User(user.getUsername(), user.getPassword(), true, true, user.isCredentialsNotExpired(), true, authorities);
     }
 

@@ -1,4 +1,4 @@
-package com.msjs.managementservice.model.validation;
+package com.msjs.managementservice.core.model.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

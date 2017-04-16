@@ -1,4 +1,4 @@
-package com.msjs.managementservice.model;
+package com.msjs.managementservice.core.model;
 
 public abstract class Constants {
 

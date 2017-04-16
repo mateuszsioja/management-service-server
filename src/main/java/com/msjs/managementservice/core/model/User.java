@@ -1,4 +1,4 @@
-package com.msjs.managementservice.model;
+package com.msjs.managementservice.core.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,9 +11,6 @@ import javax.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.msjs.managementservice.model.Constants.SIZE_2;
-import static com.msjs.managementservice.model.Constants.SIZE_25;
 
 /**
  * Created by jakub on 29.03.2017.
@@ -29,23 +26,24 @@ public class User {
     private Long id;
 
     @NotNull
-    @Size(min = SIZE_2, max = SIZE_25)
+    @Size(min = Constants.SIZE_2, max = Constants.SIZE_25)
     @Column(unique = true)
     private String username;
 
     @NotNull
-    @Size(min = SIZE_2)
+    @Size(min = Constants.SIZE_2)
     private String password;
 
     @NotNull
-    @Size(min = SIZE_2, max = SIZE_25)
+    @Size(min = Constants.SIZE_2, max = Constants.SIZE_25)
     private String firstName;
 
     @NotNull
-    @Size(min = SIZE_2, max = SIZE_25)
+    @Size(min = Constants.SIZE_2, max = Constants.SIZE_25)
     private String lastName;
 
     @Email
+    @Column(unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)

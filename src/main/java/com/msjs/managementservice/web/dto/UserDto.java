@@ -1,7 +1,7 @@
 package com.msjs.managementservice.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.msjs.managementservice.model.Role;
+import com.msjs.managementservice.core.model.Role;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

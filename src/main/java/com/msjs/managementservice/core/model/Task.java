@@ -1,4 +1,4 @@
-package com.msjs.managementservice.model;
+package com.msjs.managementservice.core.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -6,8 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-
-import static com.msjs.managementservice.model.Constants.*;
 
 @Entity
 @Getter
@@ -19,16 +17,16 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = SIZE_2, max = SIZE_25)
+    @Size(min = Constants.SIZE_2, max = Constants.SIZE_25)
     private String type;
 
-    @Size(min = SIZE_2, max = SIZE_25)
+    @Size(min = Constants.SIZE_2, max = Constants.SIZE_25)
     private String summary;
 
-    @Size(min = SIZE_2, max = SIZE_25)
+    @Size(min = Constants.SIZE_2, max = Constants.SIZE_25)
     private String priority;
 
-    @Size(min = SIZE_2, max = SIZE_25)
+    @Size(min = Constants.SIZE_2, max = Constants.SIZE_25)
     private String status;
 
     @ManyToOne

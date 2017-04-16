@@ -6,8 +6,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.Size;
 
-import static com.msjs.managementservice.model.Constants.SIZE_2;
-import static com.msjs.managementservice.model.Constants.SIZE_25;
+import static com.msjs.managementservice.core.model.Constants.SIZE_2;
+import static com.msjs.managementservice.core.model.Constants.SIZE_25;
 
 @Getter
 @Setter

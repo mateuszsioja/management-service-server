@@ -1,6 +1,6 @@
-package com.msjs.managementservice.model.validation;
+package com.msjs.managementservice.core.model.validation;
 
-import com.msjs.managementservice.model.Role;
+import com.msjs.managementservice.core.model.Role;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

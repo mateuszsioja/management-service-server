@@ -1,9 +1,8 @@
-package com.msjs.managementservice.service;
+package com.msjs.managementservice.core.service;
 
-import com.msjs.managementservice.model.Role;
-import com.msjs.managementservice.model.Task;
-import com.msjs.managementservice.model.User;
-import com.msjs.managementservice.repository.UserRepository;
+import com.msjs.managementservice.core.model.Role;
+import com.msjs.managementservice.core.model.User;
+import com.msjs.managementservice.core.repository.UserRepository;
 import com.msjs.managementservice.security.PasswordEncoderGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +40,7 @@ public class UserService {
         user.setRole(Role.ROLE_USER);
         user.setPassword(PasswordEncoderGenerator
                 .generate(user.getPassword()));
+        user.setCredentialsNotExpired(true);
         return userRepository.save(user);
     }
 
