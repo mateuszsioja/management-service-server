@@ -1,7 +1,7 @@
 insert into person(id, username, password, first_name, last_name, email, role, credentials_not_expired) values(1001, 'user', '$2a$06$5Qv2gj8RMjJnB0w.755BC.dX5i.PTZ4ZUh9XerWt2qYqT9knvmeYS', 'Grzegorz', 'Waski', 'user@gmail.com', 'ROLE_USER', true);
 insert into person(id, username, password, first_name, last_name, email, role, credentials_not_expired) values(1002, 'admin', '$2a$06$Ec3ffedFAqAXGBKeQRRokeWqdJwWFp3ZTEo3ndOh/VTEYTni9gb1i', 'Maciej', 'Wazny', 'admin@gmail.com', 'ROLE_ADMIN', true);
-insert into task(id, type, summary, priority, status, user_id) values(1, 'typ', 'summary', 'priority', 'status', 1001);
-insert into task(id, type, summary, priority, status, user_id) values(2, 'typ', 'summary', 'priority', 'status', 1001);
+insert into task(id, type, summary, priority, status, user_id) values(1, 'typ', 'summary', 'priority', 'status', null);
+insert into task(id, type, summary, priority, status, user_id) values(2, 'typ', 'summary', 'priority', 'status', null);
 insert into task(id, type, summary, priority, status, user_id) values(3, 'typ', 'summary', 'priority', 'status', 1001);
 insert into task(id, type, summary, priority, status, user_id) values(4, 'typ', 'summary', 'priority', 'status', 1001);
 insert into task(id, type, summary, priority, status, user_id) values(5, 'typ', 'summary', 'priority', 'status', 1001);

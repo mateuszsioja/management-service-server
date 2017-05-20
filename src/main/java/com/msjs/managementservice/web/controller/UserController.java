@@ -2,13 +2,16 @@ package com.msjs.managementservice.web.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.msjs.managementservice.core.model.ShortUser;
 import com.msjs.managementservice.core.model.User;
 import com.msjs.managementservice.core.model.UsersUniqueFieldsView;
+import com.msjs.managementservice.core.repository.ShortUserRepository;
 import com.msjs.managementservice.core.repository.UserRepository;
 import com.msjs.managementservice.core.repository.UsersUniqueFieldsRepository;
 import com.msjs.managementservice.core.service.TaskService;
 import com.msjs.managementservice.core.service.UserService;
 import com.msjs.managementservice.web.dto.*;
+import com.msjs.managementservice.web.dto.mapper.ShortUserMapper;
 import com.msjs.managementservice.web.dto.mapper.TaskMapper;
 import com.msjs.managementservice.web.dto.mapper.UserMapper;
 import com.msjs.managementservice.web.dto.mapper.UsersUniqueFieldsMapper;
@@ -36,17 +39,20 @@ public class UserController {
     private final UserMapper userMapper;
     private final TaskService taskService;
     private final TaskMapper taskMapper;
+    private final ShortUserRepository shortUserRepository;
+    private final ShortUserMapper shortUserMapper;
     private final UsersUniqueFieldsMapper usersUniqueFieldsMapper;
     private final UsersUniqueFieldsRepository usersUniqueFieldsRepository;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper, TaskService taskService, TaskMapper taskMapper, UserRepository userRepository, UsersUniqueFieldsMapper usersUniqueFieldsMapper, UsersUniqueFieldsRepository usersUniqueFieldsRepository) {
+    public UserController(UserService userService, UserMapper userMapper, TaskService taskService, TaskMapper taskMapper, UserRepository userRepository, ShortUserRepository shortUserRepository, ShortUserMapper shortUserMapper, UsersUniqueFieldsMapper usersUniqueFieldsMapper, UsersUniqueFieldsRepository usersUniqueFieldsRepository) {
         this.userService = userService;
         this.userMapper = userMapper;
         this.taskService = taskService;
         this.taskMapper = taskMapper;
+        this.shortUserRepository = shortUserRepository;
+        this.shortUserMapper = shortUserMapper;
         this.usersUniqueFieldsMapper = usersUniqueFieldsMapper;
-
         this.usersUniqueFieldsRepository = usersUniqueFieldsRepository;
     }
 
@@ -93,8 +99,14 @@ public class UserController {
     }
 
     @GetMapping(UNIQUE_FIELDS)
-    public ResponseEntity<UsersUniqueFieldsDto> findUsersUniqueFields() {
+    public ResponseEntity<UsersUniqueFieldsDto> getUsersUniqueFields() {
         List<UsersUniqueFieldsView> views = usersUniqueFieldsRepository.findAll();
         return new ResponseEntity<>(usersUniqueFieldsMapper.toDto(views), HttpStatus.OK);
+    }
+
+    @GetMapping(SHORT)
+    public ResponseEntity<List<ShortUserDto>> getShortUsers() {
+        List<ShortUser> shortUsers = shortUserRepository.findAll();
+        return new ResponseEntity<>(shortUserMapper.mapToDto(shortUsers), HttpStatus.OK);
     }
 }

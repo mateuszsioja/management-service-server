@@ -19,6 +19,7 @@ public final class ApiUrl {
     static final String ROLE = "/role";
     static final String USER_TASKS = ID_PATH_PARAM + "/tasks";
     static final String UNIQUE_FIELDS = "/unique-fields";
+    static final String SHORT = "/short";
 
     static final String TASKS = API + "/tasks";
 
