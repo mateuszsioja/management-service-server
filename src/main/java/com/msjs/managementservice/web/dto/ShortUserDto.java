@@ -11,4 +11,5 @@ import lombok.Getter;
 public class ShortUserDto {
     private final Long id;
     private final String fullName;
+    private final String username;
 }

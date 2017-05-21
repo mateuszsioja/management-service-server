@@ -20,6 +20,7 @@ public class ShortUser {
 
     @Id
     private Long id;
+    private String username;
     private String firstName;
     private String lastName;
 }

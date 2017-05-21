@@ -19,7 +19,7 @@ public class ShortUserMapper {
     }
 
     private Function<ShortUser, ShortUserDto> mapToShortUserDto() {
-        return s -> new ShortUserDto(s.getId(), convertToFullName(s.getFirstName(), s.getLastName()));
+        return s -> new ShortUserDto(s.getId(), convertToFullName(s.getFirstName(), s.getLastName()), s.getUsername());
     }
 
     private String convertToFullName(String firstName, String lastName) {

@@ -53,4 +53,10 @@ public class User {
     private List<Task> tasks = new ArrayList<>();
 
     private boolean credentialsNotExpired;
+
+    @Transient
+    public void assignTask(final Task task) {
+        tasks.add(task);
+        task.setUser(this);
+    }
 }

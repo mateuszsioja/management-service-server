@@ -1,6 +1,7 @@
 package com.msjs.managementservice.core.service;
 
 import com.msjs.managementservice.core.model.Task;
+import com.msjs.managementservice.core.model.User;
 import com.msjs.managementservice.core.repository.TaskRepository;
 import com.msjs.managementservice.core.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,11 @@ public class TaskService {
     }
 
     public void assignTaskToUser(Long taskId, Long userId) {
-        Task task = taskRepository.findOne(taskId);
-        task.setUser(userRepository.getOne(userId));
-        taskRepository.save(task);
+//        Task task = taskRepository.findOne(taskId);
+//        task.setUser(userRepository.getOne(userId));
+//        taskRepository.save(task);
+        final User user = userRepository.findOne(userId);
+        user.assignTask(taskRepository.findOne(taskId));
+        userRepository.save(user);
     }
 }
