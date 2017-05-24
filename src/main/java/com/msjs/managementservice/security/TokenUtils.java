@@ -21,9 +21,8 @@ public abstract class TokenUtils {
 
     private static final String ROLES = "roles";
     private static final String CREATED_DATE = "created";
-    private static final String EXPIRATION_DATE = "expiration";
+    private static final String EXPIRATION_DATE = "exp";
     private static final String SECRET = "secret";
-    private static final String PREFIX = "Bearer: ";
     private static final String USERNAME = "username";
     private static final int HALF_HOUR = 30;
 
@@ -38,12 +37,11 @@ public abstract class TokenUtils {
     }
 
     static String generateToken(Map<String, Object> claims) {
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date())
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-        return appendPrefix(token);
     }
 
     static String getUsernameFromToken(String token) {
@@ -90,7 +88,7 @@ public abstract class TokenUtils {
         return DateUtils.addMinutes(new Date(), HALF_HOUR);
     }
 
-    private static String appendPrefix(String token) {
-        return PREFIX.concat(token);
-    }
+//    private static String appendPrefix(String token) {
+//        return PREFIX.concat(token);
+//    }
 }
