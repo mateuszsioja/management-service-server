@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth").permitAll()
                 .antMatchers("/api/auth/refresh").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/tasks").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/unique-fields").permitAll()
                 .anyRequest().authenticated()
                 .and()

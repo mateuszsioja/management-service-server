@@ -41,7 +41,9 @@ public class UserService {
         user.setPassword(PasswordEncoderGenerator
                 .generate(user.getPassword()));
         user.setCredentialsNotExpired(true);
-        return userRepository.save(user);
+        //return userRepository.save(user);
+        User u =  userRepository.save(user);
+        return u;
     }
 
     public List<User> getUsersByRole(String role) {
