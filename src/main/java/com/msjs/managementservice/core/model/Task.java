@@ -14,7 +14,8 @@ import javax.validation.constraints.Size;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_generator")
+    @SequenceGenerator(name="task_generator", sequenceName = "task_seq", allocationSize = 11)
     private Long id;
 
     @Size(min = Constants.SIZE_2, max = Constants.SIZE_25)

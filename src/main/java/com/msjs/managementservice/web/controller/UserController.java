@@ -85,9 +85,9 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(ID_PATH_PARAM)
     public ResponseEntity changeUserRole(@PathVariable("id") Long id,
-                                         @Valid @RequestBody PatchRoleDto patchRoleDto,
+                                         @Valid @RequestBody PatchDto patchDto,
                                          HttpServletResponse response) {
-        User user = userService.changeUserRole(patchRoleDto.getRole(), id);
+        User user = userService.changeUserRole(patchDto.getValue(), id);
         response.setHeader(LOCATION_HEADER, user.getId().toString());
         return new ResponseEntity(HttpStatus.OK);
     }
